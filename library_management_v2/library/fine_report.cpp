@@ -1,7 +1,7 @@
 #include "library.h"
 #include <map>
 
-// ===================== QUẢN LÝ TIỀN PHẠT =====================
+//  QUẢN LÝ TIỀN PHẠT 
 
 // (dùng lại hàm từ borrow.cpp - khai báo lại extern)
 extern string getReaderName(int readerId);
@@ -103,7 +103,7 @@ void manageFine() {
     } while (choice != 0);
 }
 
-// ===================== BÁO CÁO THỐNG KÊ =====================
+//  BÁO CÁO THỐNG KÊ 
 
 void reportBookStat() {
     clearScreen();

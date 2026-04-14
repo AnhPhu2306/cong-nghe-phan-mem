@@ -1,6 +1,6 @@
 #include "library.h"
 
-// ===================== CÁC HÀM TIỆN ÍCH =====================
+//  CÁC HÀM TIỆN ÍCH 
 
 // Lấy ngày hiện tại dạng "dd/mm/yyyy"
 string getCurrentDate() {

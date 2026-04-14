@@ -269,9 +269,9 @@ void manageBorrow() {
     int choice;
     do {
         clearScreen();
-        cout << "======================================\n";
+        cout << "\n";
         cout << "         QUAN LY MUON/TRA SACH\n";
-        cout << "======================================\n";
+        cout << "\n";
         cout << "  1. Xem danh sach phieu muon\n";
         cout << "  2. Tao phieu muon sach\n";
         cout << "  3. Xac nhan tra sach\n";

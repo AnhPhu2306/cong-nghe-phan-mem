@@ -11,7 +11,7 @@
 #include <iomanip>
 using namespace std;
 
-// ===================== CÁC HẰNG SỐ =====================
+//  CÁC HẰNG SỐ 
 const string DATA_USERS    = "data/users.txt";
 const string DATA_BOOKS    = "data/books.txt";
 const string DATA_BORROWS  = "data/borrows.txt";
@@ -20,7 +20,7 @@ const string DATA_FINES    = "data/fines.txt";
 const double FINE_PER_DAY  = 2000.0;  // 2000 VND / ngày trễ
 const int    MAX_BORROW    = 5;        // Tối đa 5 sách / lần mượn
 
-// ===================== STRUCT ĐỊNH NGHĨA =====================
+//  STRUCT ĐỊNH NGHĨA 
 
 struct User {
     int    id;
@@ -69,14 +69,14 @@ struct Fine {
     string createdDate;
 };
 
-// ===================== BIẾN TOÀN CỤC =====================
+//  BIẾN TOÀN CỤC 
 extern vector<User>       gUsers;
 extern vector<Book>       gBooks;
 extern vector<BorrowSlip> gBorrows;
 extern vector<Fine>       gFines;
 extern User*              gCurrentUser;  // người đang đăng nhập
 
-// ===================== KHAI BÁO HÀM =====================
+//  KHAI BÁO HÀM 
 
 // --- Tiện ích ---
 string  getCurrentDate();

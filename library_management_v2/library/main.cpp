@@ -1,14 +1,14 @@
 #include "library.h"
 #include <sys/stat.h>
 
-// ===================== BIẾN TOÀN CỤC =====================
+//  BIẾN TOÀN CỤC 
 vector<User>       gUsers;
 vector<Book>       gBooks;
 vector<BorrowSlip> gBorrows;
 vector<Fine>       gFines;
 User*              gCurrentUser = nullptr;
 
-// ===================== KHỞI TẠO DỮ LIỆU MẶC ĐỊNH =====================
+//  KHỞI TẠO DỮ LIỆU MẶC ĐỊNH 
 // Tạo tài khoản admin mặc định nếu chưa có file dữ liệu
 
 void initDefaultData() {
@@ -69,16 +69,16 @@ void initDefaultData() {
 
     saveAllData();
 
-    cout << "  === DU LIEU MAN KHOI TAO ===\n";
+    cout << "   DU LIEU MAN KHOI TAO \n";
     cout << "  Tai khoan mac dinh:\n";
     cout << "    Admin    : admin / admin123\n";
     cout << "    Thu thu  : thuthu / thu123\n";
     cout << "    Doc gia  : docgia1 / doc123\n";
-    cout << "  ============================\n\n";
+    cout << "  \n\n";
     pause();
 }
 
-// ===================== MAIN =====================
+//  MAIN 
 int main() {
     // Khởi tạo dữ liệu nếu lần đầu chạy
     initDefaultData();

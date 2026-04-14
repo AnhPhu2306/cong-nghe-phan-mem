@@ -2,9 +2,9 @@
 
 void registerAccount() {
     clearScreen();
-    cout << "======================================\n";
+    cout << "\n";
     cout << "          DANG KY TAI KHOAN\n";
-    cout << "======================================\n\n";
+    cout << "\n\n";
 
     cout << "  Chon loai tai khoan:\n";
     cout << "    1. Doc gia\n";

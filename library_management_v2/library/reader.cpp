@@ -1,6 +1,6 @@
 #include "library.h"
 
-// ===================== QUẢN LÝ ĐỘC GIẢ =====================
+//  QUẢN LÝ ĐỘC GIẢ 
 
 void listReaders() {
     clearScreen();

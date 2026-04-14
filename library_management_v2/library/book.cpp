@@ -1,12 +1,12 @@
 #include "library.h"
 
-// ===================== QUẢN LÝ SÁCH =====================
+//  QUẢN LÝ SÁCH 
 
 void listBooks() {
     clearScreen();
-    cout << "======================================\n";
+    cout << "\n";
     cout << "          DANH SACH SACH\n";
-    cout << "======================================\n";
+    cout << "\n";
     cout << left
          << setw(5)  << "ID"
          << setw(30) << "Ten sach"
@@ -36,9 +36,9 @@ void viewBookDetail(int bookId) {
     for (auto& b : gBooks) {
         if (b.id == bookId) {
             clearScreen();
-            cout << "======================================\n";
+            cout << "\n";
             cout << "          CHI TIET SACH\n";
-            cout << "======================================\n";
+            cout << "\n";
             cout << "  ID        : " << b.id        << "\n";
             cout << "  Ten sach  : " << b.title     << "\n";
             cout << "  Tac gia   : " << b.author    << "\n";
@@ -59,9 +59,9 @@ void viewBookDetail(int bookId) {
 
 void searchBook() {
     clearScreen();
-    cout << "======================================\n";
+    cout << "\n";
     cout << "           TIM KIEM SACH\n";
-    cout << "======================================\n";
+    cout << "\n";
     cout << "  1. Tim theo ten sach\n";
     cout << "  2. Tim theo tac gia\n";
     cout << "  3. Tim theo the loai\n";
@@ -125,9 +125,9 @@ void searchBook() {
 
 void addBook() {
     clearScreen();
-    cout << "======================================\n";
+    cout << "\n";
     cout << "            THEM SACH MOI\n";
-    cout << "======================================\n\n";
+    cout << "\n\n";
 
     cin.ignore();
     Book b;
@@ -158,9 +158,9 @@ void addBook() {
 
 void updateBook() {
     clearScreen();
-    cout << "======================================\n";
+    cout << "\n";
     cout << "         CAP NHAT THONG TIN SACH\n";
-    cout << "======================================\n\n";
+    cout << "\n\n";
 
     cout << "  Nhap ID sach can sua: ";
     int id; cin >> id;
@@ -214,9 +214,9 @@ void updateBook() {
 
 void deleteBook() {
     clearScreen();
-    cout << "======================================\n";
+    cout << "\n";
     cout << "             XOA SACH\n";
-    cout << "======================================\n\n";
+    cout << "\n\n";
 
     cout << "  Nhap ID sach can xoa: ";
     int id; cin >> id;
@@ -250,9 +250,9 @@ void manageBook() {
     int choice;
     do {
         clearScreen();
-        cout << "======================================\n";
+        cout << "\n";
         cout << "          QUAN LY SACH\n";
-        cout << "======================================\n";
+        cout << "\n";
         cout << "  1. Xem danh sach sach\n";
         cout << "  2. Tim kiem sach\n";
         cout << "  3. Them sach moi\n";
