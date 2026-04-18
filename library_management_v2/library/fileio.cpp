@@ -1,7 +1,20 @@
 #include "library.h"
 
 
-// Tải tất cả dữ liệu khi khởi động
+// ==========================================
+// LUU / TAI DU LIEU TU FILE
+// ==========================================
+// File nay quan ly xuat nhap file cho tat ca:
+// - Users (loadUsers/saveUsers)
+// - Books (loadBooks/saveBooks)
+// - Borrows (loadBorrows/saveBorrows)
+// - Fines (loadFines/saveFines)
+//
+// Format file: Dung ky tu '|' de phan cach cac truong
+// Vi du: id|username|password|role|status|fullname|email
+
+// HAM: TAI TAT CA DU LIEU TU FILE
+// Goi lan dau khi khoi dong chuong trinh
 void loadAllData() {
     loadUsers();
     loadBooks();
@@ -9,7 +22,8 @@ void loadAllData() {
     loadFines();
 }
 
-// Lưu tất cả dữ liệu
+// HAM: LUU TAT CA DU LIEU XUONG FILE
+// Goi truoc khi thoat chuong trinh hoac khi co thay doi
 void saveAllData() {
     saveUsers();
     saveBooks();
@@ -17,7 +31,11 @@ void saveAllData() {
     saveFines();
 }
 
-// --------- USERS ---------
+// ========== PHAN 1: USERS (NGUOI DUNG) ==========
+// Format file users.txt:
+// id|username|password|role|status|fullname|email
+
+// HAM: TAI DANH SACH USERS TU FILE
 void loadUsers() {
     gUsers.clear();
     ifstream f(DATA_USERS);
@@ -49,6 +67,7 @@ void loadUsers() {
 
 void saveUsers() {
     ofstream f(DATA_USERS);
+    // Ghi tung user, dung | phan cach
     for (auto& u : gUsers) {
         f << u.id << "|" << u.username << "|" << u.password << "|"
           << u.role << "|" << u.status << "|" << u.fullname << "|"
@@ -57,7 +76,11 @@ void saveUsers() {
     f.close();
 }
 
-// --------- BOOKS ---------
+// ========== PHAN 2: BOOKS (SACH) ==========
+// Format file books.txt:
+// id|title|author|publisher|year|category|quantity|available|location
+
+// HAM: TAI DANH SACH SACH TU FILE
 void loadBooks() {
     gBooks.clear();
     ifstream f(DATA_BOOKS);
@@ -89,6 +112,7 @@ void loadBooks() {
 
 void saveBooks() {
     ofstream f(DATA_BOOKS);
+    // Ghi tung sach, dung | phan cach
     for (auto& b : gBooks) {
         f << b.id << "|" << b.title << "|" << b.author << "|"
           << b.publisher << "|" << b.year << "|" << b.category << "|"
@@ -97,7 +121,14 @@ void saveBooks() {
     f.close();
 }
 
-// --------- BORROWS ---------
+// ========== PHAN 3: BORROWS (PHIEU MUON) ==========
+// Format file borrows.txt:
+// SLIP|id|readerId|borrowDate|dueDate|returnDate|status
+// DETAIL|bookId|quantity
+// (lap lai cho moi chi tiet)
+// END
+
+// HAM: TAI DANH SACH PHIEU MUON TU FILE
 void loadBorrows() {
     gBorrows.clear();
     ifstream f(DATA_BORROWS);
@@ -148,19 +179,27 @@ void loadBorrows() {
 
 void saveBorrows() {
     ofstream f(DATA_BORROWS);
+    // Ghi tung phieu muon voi chi tiet
     for (auto& slip : gBorrows) {
+        // Dong 1: Thong tin phieu muon
         f << "SLIP|" << slip.id << "|" << slip.readerId << "|"
           << slip.borrowDate << "|" << slip.dueDate << "|"
           << slip.returnDate << "|" << slip.status << "\n";
+        // Nhieu dong: Chi tiet sach
         for (auto& d : slip.details) {
             f << "DETAIL|" << d.bookId << "|" << d.quantity << "\n";
         }
+        // Dong cuoi: Ket thuc phieu
         f << "END\n";
     }
     f.close();
 }
 
-// --------- FINES ---------
+// ========== PHAN 4: FINES (TIEN PHAT) ==========
+// Format file fines.txt:
+// id|borrowId|readerId|amount|reason|status|createdDate
+
+// HAM: TAI DANH SACH TIEN PHAT TU FILE
 void loadFines() {
     gFines.clear();
     ifstream f(DATA_FINES);
@@ -190,6 +229,7 @@ void loadFines() {
 
 void saveFines() {
     ofstream f(DATA_FINES);
+    // Ghi tung phieu phat, dung | phan cach
     for (auto& fine : gFines) {
         f << fine.id << "|" << fine.borrowId << "|" << fine.readerId << "|"
           << fine.amount << "|" << fine.reason << "|" << fine.status << "|"

@@ -1,7 +1,18 @@
 #include "library.h"
 
-//  QUẢN LÝ SÁCH 
+// ==========================================
+// QUAN LY SACH
+// ==========================================
+// Cac chuc nang:
+// - listBooks(): Hien thi danh sach tat ca sach
+// - searchBook(): Tim kiem sach theo ten/tac gia/the loai
+// - viewBookDetail(): Xem chi tiet cua 1 cuon sach
+// - addBook(): Them sach moi
+// - updateBook(): Sua thong tin sach
+// - deleteBook(): Xoa sach
+// - manageBook(): Menu quan ly sach
 
+// HAM: HIEN THI DANH SACH SAC
 void listBooks() {
     clearScreen();
     cout << "\n";
@@ -33,12 +44,14 @@ void listBooks() {
 }
 
 void viewBookDetail(int bookId) {
+    // Tim sach theo ID
     for (auto& b : gBooks) {
         if (b.id == bookId) {
             clearScreen();
             cout << "\n";
             cout << "          CHI TIET SACH\n";
             cout << "\n";
+            // Hien thi tong hop thong tin sach
             cout << "  ID        : " << b.id        << "\n";
             cout << "  Ten sach  : " << b.title     << "\n";
             cout << "  Tac gia   : " << b.author    << "\n";
@@ -53,6 +66,7 @@ void viewBookDetail(int bookId) {
             return;
         }
     }
+    // Khong tim thay ID
     cout << "\n  Khong tim thay sach ID " << bookId << "\n";
     pause();
 }
@@ -62,6 +76,7 @@ void searchBook() {
     cout << "\n";
     cout << "           TIM KIEM SACH\n";
     cout << "\n";
+    // Menu chon tieu chi tim kiem
     cout << "  1. Tim theo ten sach\n";
     cout << "  2. Tim theo tac gia\n";
     cout << "  3. Tim theo the loai\n";
@@ -76,7 +91,7 @@ void searchBook() {
     string keyword;
     getline(cin, keyword);
 
-    // Chuyển thường hóa để tìm không phân biệt hoa thường
+    // Chuyen thanh chu thuong de tim khong phan biet hoa thuong
     string kw = keyword;
     transform(kw.begin(), kw.end(), kw.begin(), ::tolower);
 
@@ -89,16 +104,20 @@ void searchBook() {
          << "Con lai\n";
     cout << string(75, '-') << "\n";
 
+    // Duyet danh sach sach va tim kiem
     int count = 0;
     for (auto& b : gBooks) {
         string field = "";
+        // Chon truong tim kiem theo lua chon
         if      (choice == 1) field = b.title;
         else if (choice == 2) field = b.author;
         else if (choice == 3) field = b.category;
 
+        // Chuyen thuong hoa de so sanh
         string fieldLower = field;
         transform(fieldLower.begin(), fieldLower.end(), fieldLower.begin(), ::tolower);
 
+        // Tim tu khoa trong truong
         if (fieldLower.find(kw) != string::npos) {
             cout << left
                  << setw(5)  << b.id
@@ -113,7 +132,7 @@ void searchBook() {
     if (count == 0) cout << "  Khong tim thay ket qua phu hop.\n";
     else cout << "\n  Tim thay " << count << " sach.\n";
 
-    // Xem chi tiết
+    // Cau hoi xem chi tiet
     if (count > 0) {
         cout << "\n  Nhap ID sach de xem chi tiet (0 = bo qua): ";
         int id; cin >> id;
@@ -132,11 +151,12 @@ void addBook() {
     cin.ignore();
     Book b;
 
-    // Sinh ID mới
+    // Tao ID moi (ID = max + 1)
     int maxId = 0;
     for (auto& bk : gBooks) if (bk.id > maxId) maxId = bk.id;
     b.id = maxId + 1;
 
+    // Nhap thong tin sach
     cout << "  Ten sach     : "; getline(cin, b.title);
     cout << "  Tac gia      : "; getline(cin, b.author);
     cout << "  NXB          : "; getline(cin, b.publisher);
@@ -147,8 +167,10 @@ void addBook() {
     cin.ignore();
     cout << "  Vi tri keo   : "; getline(cin, b.location);
 
+    // Ban dau, so luong con lai = tong so luong
     b.available = b.quantity;
 
+    // Them vao danh sach va luu file
     gBooks.push_back(b);
     saveBooks();
 
@@ -165,6 +187,7 @@ void updateBook() {
     cout << "  Nhap ID sach can sua: ";
     int id; cin >> id;
 
+    // Tim sach theo ID
     Book* found = nullptr;
     for (auto& b : gBooks) {
         if (b.id == id) { found = &b; break; }
@@ -179,6 +202,7 @@ void updateBook() {
     cout << "  Sach hien tai: " << found->title << "\n\n";
     cin.ignore();
 
+    // Nhap cac thong tin cap nhat (Enter = giu nguyen)
     cout << "  Ten moi (Enter = giu nguyen): ";
     string input;
     getline(cin, input);
@@ -221,14 +245,18 @@ void deleteBook() {
     cout << "  Nhap ID sach can xoa: ";
     int id; cin >> id;
 
+    // Tim sach va xoa
     for (int i = 0; i < (int)gBooks.size(); i++) {
         if (gBooks[i].id == id) {
-            // Kiểm tra sách đang được mượn
+            // Kiem tra sach co dang duoc muon khong
+            // Neu available < quantity thi sach dang duoc muon
             if (gBooks[i].available < gBooks[i].quantity) {
                 cout << "\n  Sach dang duoc muon, khong the xoa!\n";
                 pause();
                 return;
             }
+            
+            // Xac nhan xoa
             cout << "  Xac nhan xoa sach \"" << gBooks[i].title << "\"? (y/n): ";
             char c; cin >> c;
             if (c == 'y' || c == 'Y') {
@@ -246,6 +274,8 @@ void deleteBook() {
     pause();
 }
 
+// HAM: MENU QUAN LY SACH
+// Cho phep chon cac hanh dong: xem danh sach, them, sua, xoa, tim kiem
 void manageBook() {
     int choice;
     do {

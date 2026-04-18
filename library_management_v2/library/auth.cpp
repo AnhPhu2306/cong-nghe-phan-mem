@@ -1,11 +1,24 @@
 #include "library.h"
 
+// ==========================================
+// QUAN LY DANG NHAP / DANG KY / DANG XUAT
+// ==========================================
+// File nay chua cac ham:
+// - registerAccount(): Dang ky tai khoan moi
+// - doLogin(): Thuc hien dang nhap 1 lan
+// - login(): Man hinh dang nhap chinh
+// - logout(): Dang xuat
+// - changePassword(): Doi mat khau
+
+// HAM: DANG KY TAI KHOAN MOI
+// Cho phep dung dang ky tai khoan Doc Gia hoac Thu Thu
 void registerAccount() {
     clearScreen();
     cout << "\n";
     cout << "          DANG KY TAI KHOAN\n";
     cout << "\n\n";
 
+    // Hien thi lua chon loai tai khoan can tao
     cout << "  Chon loai tai khoan:\n";
     cout << "    1. Doc gia\n";
     cout << "    2. Thu thu\n";
@@ -21,14 +34,16 @@ void registerAccount() {
 
     cin.ignore();
     User u;
+    // Dat vai tro theo lua chon
     u.role   = (choice == 1) ? "reader" : "librarian";
     u.status = "active";
 
-    // Sinh ID moi
+    // Tao ID moi (ID = max + 1)
     int maxId = 0;
     for (auto& usr : gUsers) if (usr.id > maxId) maxId = usr.id;
     u.id = maxId + 1;
 
+    // Nhap thong tin dang ky
     cout << "\n   Thong tin dang ky\n";
     cout << "  Ho ten day du : ";
     getline(cin, u.fullname);
@@ -45,6 +60,7 @@ void registerAccount() {
         pause();
         return;
     }
+    
     // Kiem tra username da ton tai chua
     for (auto& usr : gUsers) {
         if (usr.username == u.username) {
@@ -54,6 +70,7 @@ void registerAccount() {
         }
     }
 
+    // Nhap va xac nhan mat khau
     cout << "  Password      : ";
     string pass; getline(cin, pass);
     if (pass.length() < 4) {
@@ -68,14 +85,17 @@ void registerAccount() {
         pause();
         return;
     }
+    // Hash mat khau truoc khi luu
     u.password = hashPassword(pass);
 
     cout << "  Email         : ";
     getline(cin, u.email);
 
+    // Luu tai khoan moi vao danh sach va file
     gUsers.push_back(u);
     saveUsers();
 
+    // Thong bao thanh cong
     cout << "  DANG KY THANH CONG!\n";
     cout << "  Vai tro  : " << (u.role == "reader" ? "Doc gia" : "Thu thu") << "\n";
     cout << "  Ho ten   : " << u.fullname << "\n";
@@ -84,7 +104,8 @@ void registerAccount() {
     pause();
 }
 
-// Thuc hien dang nhap (1 lan thu)
+// HAM: THUC HIEN DANG NHAP (1 LAN THU)
+// Tra ve true neu dang nhap thanh cong, false neu sai
 bool doLogin() {
     clearScreen();
 
@@ -95,15 +116,19 @@ bool doLogin() {
     cout << "  Password: ";
     cin >> password;
 
+    // Hash mat khau va kiem tra trong danh sach
     string hashed = hashPassword(password);
 
     for (auto& u : gUsers) {
+        // Kiem tra username va password khop
         if (u.username == username && u.password == hashed) {
+            // Kiem tra tai khoan co bi khoa khong
             if (u.status == "locked") {
                 cout << "\n  Tai khoan da bi khoa! Lien he Admin.\n";
                 pause();
                 return false;
             }
+            // Dang nhap thanh cong - luu vao bien global
             gCurrentUser = &u;
             cout << "\n  Dang nhap thanh cong! Xin chao, " << u.fullname << "!\n";
             pause();
@@ -111,11 +136,13 @@ bool doLogin() {
         }
     }
 
+    // Neu khong tim thay user hoac password sai
     cout << "\n  Sai username hoac password!\n";
     return false;
 }
 
-// Menu man hinh chao - tra ve true neu dang nhap ok, false neu thoat
+// HAM: MENU DANG NHAP CHINH
+// Tra ve true neu dang nhap thanh cong, false neu chon thoat
 bool login() {
     while (true) {
         clearScreen();
@@ -153,36 +180,47 @@ bool login() {
     }
 }
 
+// HAM: DANG XUAT
+// Xoa con tro nguoi dung hien tai
 void logout() {
     gCurrentUser = nullptr;
     cout << "\n  Da dang xuat.\n";
 }
 
+// HAM: DOI MAT KHAU
+// Cho phep nguoi dung dang nhap doi mat khau
 void changePassword() {
     clearScreen();
     cout << "           DOI MAT KHAU\n";
 
+    // Nhap mat khau cu va moi
     string oldPass, newPass, confirmPass;
     cout << "  Mat khau cu    : "; cin >> oldPass;
     cout << "  Mat khau moi   : "; cin >> newPass;
     cout << "  Xac nhan lai   : "; cin >> confirmPass;
 
+    // Kiem tra mat khau cu
     if (hashPassword(oldPass) != gCurrentUser->password) {
         cout << "\n  Mat khau cu khong dung!\n";
         pause();
         return;
     }
+    
+    // Kiem tra 2 mat khau moi co khop khong
     if (newPass != confirmPass) {
         cout << "\n  Mat khau moi khong khop!\n";
         pause();
         return;
     }
+    
+    // Kiem tra do dai mat khau toi thieu
     if (newPass.length() < 4) {
         cout << "\n  Mat khau phai co it nhat 4 ky tu!\n";
         pause();
         return;
     }
 
+    // Cap nhat mat khau moi trong danh sach va bien global
     for (auto& u : gUsers) {
         if (u.id == gCurrentUser->id) {
             u.password = hashPassword(newPass);
@@ -190,6 +228,8 @@ void changePassword() {
             break;
         }
     }
+    
+    // Luu vao file
     saveUsers();
     cout << "\n  Doi mat khau thanh cong!\n";
     pause();

@@ -1,6 +1,14 @@
 #ifndef LIBRARY_H
 #define LIBRARY_H
 
+// ==========================================
+// FILE HEADER CHINH - HE THONG QUAN LY THU VIEN
+// ==========================================
+// File nay chua tat ca:
+// - Dinh nghia cac struct du lieu
+// - Khai bao cac hang so
+// - Khai bao cac ham
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -11,74 +19,92 @@
 #include <iomanip>
 using namespace std;
 
-//  CÁC HẰNG SỐ 
-const string DATA_USERS    = "data/users.txt";
-const string DATA_BOOKS    = "data/books.txt";
-const string DATA_BORROWS  = "data/borrows.txt";
-const string DATA_FINES    = "data/fines.txt";
+// ==========================================
+// CAC HANG SO TOAN CUC
+// ==========================================
+// Duong dan den cac file du lieu
+const string DATA_USERS    = "data/users.txt";    // File luu tong hop nguoi dung
+const string DATA_BOOKS    = "data/books.txt";    // File luu danh sach sach
+const string DATA_BORROWS  = "data/borrows.txt";  // File luu phieu muon tra
+const string DATA_FINES    = "data/fines.txt";    // File luu tien phat
 
-const double FINE_PER_DAY  = 2000.0;  // 2000 VND / ngày trễ
-const int    MAX_BORROW    = 5;        // Tối đa 5 sách / lần mượn
+// Cac thong so he thong
+const double FINE_PER_DAY  = 2000.0;  // Phat 2000 VND cho moi ngay tre
+const int    MAX_BORROW    = 5;        // Toi da muon 5 cuon mot lan
 
-//  STRUCT ĐỊNH NGHĨA 
+// ==========================================
+// CAC STRUCT DINH NGHIA DU LIEU
+// ==========================================
 
+// STRUCT 1: THONG TIN NGUOI DUNG (User, Admin, Thu Thu, Doc Gia)
 struct User {
-    int    id;
-    string username;
-    string password;   // lưu dạng đơn giản (hash giả lập)
-    string role;       // "admin", "librarian", "reader"
-    string status;     // "active", "locked"
-    string fullname;
-    string email;
+    int    id;           // ID duy nhat
+    string username;     // Ten dang nhap
+    string password;     // Mat khau (da hash)
+    string role;         // Vai tro: "admin", "librarian", "reader"
+    string status;       // Trang thai: "active" (hoat dong), "locked" (bi khoa)
+    string fullname;     // Ho va ten day du
+    string email;        // Dia chi email
 };
 
+// STRUCT 2: THONG TIN SACH
 struct Book {
-    int    id;
-    string title;
-    string author;
-    string publisher;
-    int    year;
-    string category;
-    int    quantity;    // tổng số lượng
-    int    available;   // số lượng còn lại
-    string location;    // vị trí kệ sách
+    int    id;          // ID duy nhat cua sach
+    string title;       // Ten sach
+    string author;      // Tac gia
+    string publisher;   // Nha xuat ban
+    int    year;        // Nam xuat ban
+    string category;    // The loai (Toan, Lap trinh, Van hoc, v.v.)
+    int    quantity;    // Tong so cuon trong thu vien
+    int    available;   // So cuon con lai (chua bi muon)
+    string location;    // Vi tri keo sach (VD: A1-01)
 };
 
+// STRUCT 3: CHI TIET SAC TRONG PHIEU MUON
+// Luu thong tin tung cuon sach duoc muon trong 1 phieu
 struct BorrowDetail {
-    int bookId;
-    int quantity;
+    int bookId;     // ID cua sach duoc muon
+    int quantity;   // So luong cuon muon
 };
 
+// STRUCT 4: PHIEU MUON SACH
 struct BorrowSlip {
-    int    id;
-    int    readerId;
-    string borrowDate;  // "dd/mm/yyyy"
-    string dueDate;     // hạn trả
-    string returnDate;  // ngày trả thực tế (rỗng nếu chưa trả)
-    string status;      // "borrowing", "returned", "overdue"
-    vector<BorrowDetail> details;
+    int    id;                    // ID duy nhat cua phieu muon
+    int    readerId;              // ID cua doc gia muon sach
+    string borrowDate;            // Ngay muon (dinh dang: dd/mm/yyyy)
+    string dueDate;               // Han tra (thong thuong la 14 ngay sau)
+    string returnDate;            // Ngay tra thuc te (trong neu chua tra)
+    string status;                // Trang thai: "borrowing" (dang muon), "returned" (da tra), "overdue" (tre han)
+    vector<BorrowDetail> details; // Danh sach tung loai sach trong phieu
 };
 
+// STRUCT 5: PHIEU TIEN PHAT (cho sach tra tre)
 struct Fine {
-    int    id;
-    int    borrowId;
-    int    readerId;
-    double amount;
-    string reason;
-    string status;  // "unpaid", "paid"
-    string createdDate;
+    int    id;         // ID duy nhat cua phieu phat
+    int    borrowId;   // ID phieu muon co van de
+    int    readerId;   // ID doc gia can thanh toan phat
+    double amount;     // So tien phat (VND)
+    string reason;     // Ly do phat (VD: "Tra sach tre 5 ngay")
+    string status;     // Trang thai: "unpaid" (chua tra), "paid" (da tra)
+    string createdDate; // Ngay tao phieu phat
 };
 
-//  BIẾN TOÀN CỤC 
-extern vector<User>       gUsers;
-extern vector<Book>       gBooks;
-extern vector<BorrowSlip> gBorrows;
-extern vector<Fine>       gFines;
-extern User*              gCurrentUser;  // người đang đăng nhập
+// ==========================================
+// CAC BIEN TOAN CUC
+// ==========================================
+// Danh sach du lieu chinh - luu trom trong bo nho ram
+extern vector<User>       gUsers;      // Danh sach tat ca nguoi dung he thong
+extern vector<Book>       gBooks;      // Danh sach tat ca sach trong thu vien
+extern vector<BorrowSlip> gBorrows;    // Danh sach tat ca phieu muon tra sach
+extern vector<Fine>       gFines;      // Danh sach tat ca phieu tien phat
+extern User*              gCurrentUser; // Con tro den nguoi dung dang dang nhap
 
-//  KHAI BÁO HÀM 
+// ==========================================
+// KHAI BAO CAC HAM
+// ==========================================
 
-// --- Tiện ích ---
+// ===== PHAN 1: CAC HAM TIEN ICH (Utility Functions) =====
+// Cac ham ho tro nhu tao id, tính toán ngày, hash password
 string  getCurrentDate();
 int     daysBetween(string date1, string date2);
 string  addDays(string date, int days);
@@ -87,7 +113,8 @@ void    clearScreen();
 void    pause();
 int     generateId(int size);
 
-// --- File I/O ---
+// ===== PHAN 2: CAC HAM LUU/TAI DU LIEU (File I/O) =====
+// Doc va ghi du lieu tu/vao file
 void loadAllData();
 void saveAllData();
 void loadUsers();
@@ -99,12 +126,14 @@ void saveBooks();
 void saveBorrows();
 void saveFines();
 
-// --- Auth ---
+// ===== PHAN 3: CAC HAM DANG NHAP/DANG XUAT (Authentication) =====
+// Dang nhap, dang xuat, doi mat khau
 bool login();
 void logout();
 void changePassword();
 
-// --- Sách ---
+// ===== PHAN 4: CAC HAM QUAN LY SACH (Book Management) =====
+// Them, sua, xoa, tim kiem sach
 void manageBook();
 void addBook();
 void updateBook();
@@ -113,7 +142,8 @@ void listBooks();
 void searchBook();
 void viewBookDetail(int bookId);
 
-// --- Độc giả ---
+// ===== PHAN 5: CAC HAM QUAN LY DOC GIA (Reader Management) =====
+// Them, sua, xoa, khoa/mo khoa tai khoan doc gia
 void manageReader();
 void addReader();
 void updateReader();
@@ -121,31 +151,36 @@ void deleteReader();
 void lockReader();
 void listReaders();
 
-// --- Mượn sách ---
+// ===== PHAN 6: CAC HAM QUAN LY MUON/TRA SACH (Borrow Management) =====
+// Tao phieu muon, xac nhan tra sach, xem lich su
 void manageBorrow();
 void createBorrowSlip();
 void confirmReturn();
 void listBorrows();
 void viewBorrowHistory(int readerId = -1);
 
-// --- Tiền phạt ---
+// ===== PHAN 7: CAC HAM QUAN LY TIEN PHAT (Fine Management) =====
+// Xem, thanh toan tien phat
 void manageFine();
 void listFines();
 void payFine();
 
-// --- Báo cáo ---
+// ===== PHAN 8: CAC HAM BAO CAO THONG KE (Reporting) =====
+// Thong ke trang thai sach, sach qua han, top nguoi muon
 void viewReport();
 void reportBookStat();
 void reportOverdue();
 void reportTopBorrower();
 
-// --- Quản lý User (Admin) ---
+// ===== PHAN 9: CAC HAM QUAN LY TAI KHOAN (Admin Management) =====
+// Quan ly tai khoan nguoi dung, khoa/mo khoa
 void manageUser();
 void listUsers();
 void lockUser();
 void unlockUser();
 
-// --- Menu ---
+// ===== PHAN 10: CAC MENU CHINH (Menu Systems) =====
+// Cac menu cho tung vai tro nguoi dung
 void menuReader();
 void menuLibrarian();
 void menuAdmin();

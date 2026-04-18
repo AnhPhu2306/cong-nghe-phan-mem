@@ -1,14 +1,28 @@
 #include "library.h"
 
 
-// Tìm tên reader theo ID
+// ==========================================
+// QUAN LY MUON / TRA SACH
+// ==========================================
+// Cac chuc nang:
+// - createBorrowSlip(): Tao phieu muon sach
+// - confirmReturn(): Xac nhan tra sach (tinh phat neu tre)
+// - listBorrows(): Hien thi danh sach phieu muon
+// - viewBorrowHistory(): Xem lich su muon cua doc gia
+// - manageBorrow(): Menu quan ly muon/tra
+//
+// Cac ham ho tro:
+// - getReaderName(): Tim ten doc gia theo ID
+// - getBookTitle(): Tim ten sach theo ID
+
+// HAM HO TRO: TIM TEN DOC GIA THEO ID
 string getReaderName(int readerId) {
     for (auto& u : gUsers)
         if (u.id == readerId) return u.fullname;
     return "Khong ro";
 }
 
-// Tìm tên sách theo ID
+// HAM HO TRO: TIM TEN SAC THEO ID
 string getBookTitle(int bookId) {
     for (auto& b : gBooks)
         if (b.id == bookId) return b.title;
@@ -27,6 +41,7 @@ void listBorrows() {
          << "Trang thai\n";
     cout << string(80, '-') << "\n";
 
+    // Duyet danh sach phieu muon va in ra
     for (auto& slip : gBorrows) {
         string readerName = getReaderName(slip.readerId);
         cout << left
@@ -72,6 +87,13 @@ void viewBorrowHistory(int readerId) {
     pause();
 }
 
+// HAM: TAO PHIEU MUON SACH MOI
+// Quy trinh:
+// 1. Chon doc gia (kiem tra hop le va khong bi khoa)
+// 2. Kiem tra doc gia co phieu dang muon chua tra
+// 3. Them cac cuon sach vao phieu (max MAX_BORROW cuon)
+// 4. Giam so luong con lai cua sach
+// 5. Luu phieu vao file
 void createBorrowSlip() {
     clearScreen();
     cout << "          TAO PHIEU MUON SACH\n";
@@ -194,6 +216,7 @@ void confirmReturn() {
     cout << "  Nhap ID phieu muon: ";
     int slipId; cin >> slipId;
 
+    // Tim phieu muon theo ID
     BorrowSlip* slip = nullptr;
     for (auto& s : gBorrows) {
         if (s.id == slipId) { slip = &s; break; }

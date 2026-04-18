@@ -1,12 +1,27 @@
 #include "library.h"
 #include <map>
 
-//  QUẢN LÝ TIỀN PHẠT 
+// ==========================================
+// QUAN LY TIEN PHAT VA BAO CAO THONG KE
+// ==========================================
+// PHAN 1: QUAN LY TIEN PHAT
+// - listFines(): Hien thi danh sach tien phat
+// - payFine(): Xac nhan thanh toan tien phat
+// - manageFine(): Menu quan ly tien phat
+//
+// PHAN 2: BAO CAO THONG KE
+// - reportBookStat(): Thong ke trang thai sach
+// - reportOverdue(): Bao cao sach qua han tra
+// - reportTopBorrower(): Top 10 nguoi muon nhieu nhat
+// - viewReport(): Menu bao cao
 
-// (dùng lại hàm từ borrow.cpp - khai báo lại extern)
+// HAM HO TRO: Import tu borrow.cpp
 extern string getReaderName(int readerId);
 extern string getBookTitle(int bookId);
 
+// ===== PHAN 1: QUAN LY TIEN PHAT =====
+
+// HAM: HIEN THI DANH SACH TIEN PHAT
 void listFines() {
     clearScreen();
     cout << "          DANH SACH TIEN PHAT\n";
@@ -39,7 +54,7 @@ void listFines() {
 void payFine() {
     clearScreen();
     cout << "        XAC NHAN THANH TOAN PHAT\n";
-    // Hiển thị các khoản chưa trả
+    // Hien thi danh sach tien phat chua thanh toan
     cout << "  Cac khoan phat chua thanh toan:\n";
     bool hasUnpaid = false;
     for (auto& f : gFines) {
@@ -85,6 +100,7 @@ void payFine() {
     pause();
 }
 
+// HAM: MENU QUAN LY TIEN PHAT
 void manageFine() {
     int choice;
     do {
@@ -103,8 +119,10 @@ void manageFine() {
     } while (choice != 0);
 }
 
-//  BÁO CÁO THỐNG KÊ 
+// ===== PHAN 2: BAO CAO THONG KE =====
 
+// HAM: BAO CAO TINH TRANG SACH
+// Thong ke tong so dau sach, cuon da muon, chua muon, phieu muon
 void reportBookStat() {
     clearScreen();
     cout << "       BAO CAO TINH TRANG SACH\n";
@@ -129,6 +147,8 @@ void reportBookStat() {
     pause();
 }
 
+// HAM: BAO CAO SACH QUA HAN TRA
+// Hien thi cac phieu muon co ngay tra > han tra
 void reportOverdue() {
     clearScreen();
     cout << "         SACH QUA HAN TRA\n";
@@ -161,6 +181,8 @@ void reportOverdue() {
     pause();
 }
 
+// HAM: BAO CAO TOP 10 NGUOI MUON NHIEU NHAT
+// Dem so lan muon cua tung doc gia va sap xep giam dan
 void reportTopBorrower() {
     clearScreen();
     cout << "      TOP NGUOI MUON NHIEU NHAT\n";
@@ -197,6 +219,7 @@ void reportTopBorrower() {
     pause();
 }
 
+// HAM: MENU BAO CAO THONG KE
 void viewReport() {
     int choice;
     do {

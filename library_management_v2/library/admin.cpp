@@ -1,5 +1,19 @@
 #include "library.h"
 
+// ==========================================
+// QUAN LY TAI KHOAN VA MENU CHINH
+// ==========================================
+// Cac chuc nang:
+// - listUsers(): Hien thi danh sach tat ca tai khoan
+// - lockUser(): Khoa tai khoan
+// - unlockUser(): Mo khoa tai khoan
+// - addStaffAccount(): Them tai khoan nhan vien (Thu Thu, Admin)
+// - manageUser(): Menu quan ly tai khoan
+// - menuReader(): Menu cho Doc Gia
+// - menuLibrarian(): Menu cho Thu Thu
+// - menuAdmin(): Menu cho Admin
+
+// HAM: HIEN THI DANH SACH TAI KHOAN
 void listUsers() {
     clearScreen();
     cout << "         DANH SACH TAI KHOAN\n";
@@ -31,6 +45,7 @@ void lockUser() {
 
     for (auto& u : gUsers) {
         if (u.id == id) {
+            // Khong the tu khoa tai khoan cua minh
             if (u.id == gCurrentUser->id) {
                 cout << "\n  Khong the tu khoa tai khoan cua chinh minh!\n";
                 pause();
@@ -47,6 +62,7 @@ void lockUser() {
     pause();
 }
 
+// HAM: MO KHOA TAI KHOAN
 void unlockUser() {
     clearScreen();
     cout << "          MO KHOA TAI KHOAN\n";
@@ -73,6 +89,7 @@ void addStaffAccount() {
 
     cin.ignore();
     User u;
+    // Tao ID moi
     int maxId = 0;
     for (auto& usr : gUsers) if (usr.id > maxId) maxId = usr.id;
     u.id     = maxId + 1;
@@ -81,6 +98,7 @@ void addStaffAccount() {
     cout << "  Ho ten    : "; getline(cin, u.fullname);
     cout << "  Username  : "; getline(cin, u.username);
 
+    // Kiem tra username trung
     for (auto& usr : gUsers) {
         if (usr.username == u.username) {
             cout << "\n  Username da ton tai!\n";
@@ -95,6 +113,7 @@ void addStaffAccount() {
     cout << "  Email     : "; getline(cin, u.email);
     cout << "  Vai tro (librarian/admin): "; getline(cin, u.role);
 
+    // Kiem tra vai tro hop le
     if (u.role != "librarian" && u.role != "admin") {
         cout << "\n  Vai tro khong hop le!\n";
         pause();
@@ -129,12 +148,13 @@ void manageUser() {
     } while (choice != 0);
 }
 
+// ===== MENU CHO TAC DOC GIA =====
 void menuReader() {
     int choice;
     do {
-        clearScreen();
-     
+        clearScreen;
         cout << "    MENU DOC GIA: " << gCurrentUser->fullname << "\n";
+        cout << "  1. Tim kiem sach\n";
         cout << "  2. Xem danh sach sach\n";
         cout << "  3. Xem lich su muon cua toi\n";
         cout << "  4. Doi mat khau\n";
@@ -152,6 +172,7 @@ void menuReader() {
     logout();
 }
 
+// ===== MENU CHO THU THU =====
 void menuLibrarian() {
     int choice;
     do {
@@ -177,12 +198,12 @@ void menuLibrarian() {
     logout();
 }
 
+// ===== MENU CHO ADMIN =====
 void menuAdmin() {
     int choice;
     do {
         clearScreen();
         cout << "    MENU ADMIN: " << gCurrentUser->fullname << "\n";
- 
         cout << "  1. Quan ly tai khoan\n";
         cout << "  2. Quan ly sach\n";
         cout << "  3. Quan ly doc gia\n";

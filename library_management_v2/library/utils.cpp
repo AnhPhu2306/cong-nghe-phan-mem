@@ -1,8 +1,18 @@
 #include "library.h"
 
-//  CÁC HÀM TIỆN ÍCH 
+// ==========================================
+// CAC HAM TIEN ICH / UTILITY FUNCTIONS
+// ==========================================
+// Cac ham ho tro:
+// - getCurrentDate(): Lay ngay hom nay (dd/mm/yyyy)
+// - daysBetween(): Tinh so ngay giua 2 ngay
+// - addDays(): Cong them n ngay vao 1 ngay
+// - hashPassword(): Hash mat khau (giai lap)
+// - clearScreen(): Xoa man hinh console
+// - pause(): Dung va doi nhan Enter
+// - generateId(): Tao ID moi
 
-// Lấy ngày hiện tại dạng "dd/mm/yyyy"
+// HAM: LAY NGAY HIEN TAI (DD/MM/YYYY)
 string getCurrentDate() {
     time_t now = time(0);
     tm* ltm = localtime(&now);
@@ -14,8 +24,7 @@ string getCurrentDate() {
     return string(buf);
 }
 
-// Chuyển "dd/mm/yyyy" → số ngày (tính từ epoch đơn giản)
-// Trả về số ngày tính từ 01/01/2000
+// HAM HO TRO: Chuyen "dd/mm/yyyy" thanh so ngay
 int dateToDay(string date) {
     int d, m, y;
     sscanf(date.c_str(), "%d/%d/%d", &d, &m, &y);
@@ -24,12 +33,14 @@ int dateToDay(string date) {
     return days;
 }
 
-// Tính số ngày giữa 2 ngày (date2 - date1)
+// HAM: TINH SO NGAY GIUA 2 NGAY
+// Tra ve: date2 - date1 (so ngay)
 int daysBetween(string date1, string date2) {
     return dateToDay(date2) - dateToDay(date1);
 }
 
-// Cộng thêm n ngày vào date (định dạng dd/mm/yyyy)
+// HAM: CONG THEM N NGAY VAO MOT NGAY
+// Dung de tinh han tra sach (+14 ngay) hay ngay tra co phat
 string addDays(string date, int days) {
     int d, m, y;
     sscanf(date.c_str(), "%d/%d/%d", &d, &m, &y);
@@ -50,7 +61,8 @@ string addDays(string date, int days) {
     return string(buf);
 }
 
-// Hash password đơn giản (cộng tổng ASCII + xáo trộn)
+// HAM: HASH MAT KHAU (Giai lap - khong phai hash thuc)
+// Dung de luu mat khau mot cach an toan
 string hashPassword(string password) {
     string hashed = "";
     int key = 37;
@@ -62,7 +74,7 @@ string hashPassword(string password) {
     return hashed;
 }
 
-// Xóa màn hình
+// HAM: XOA MAN HINH CONSOLE
 void clearScreen() {
     #ifdef _WIN32
         system("cls");
@@ -71,14 +83,14 @@ void clearScreen() {
     #endif
 }
 
-// Dừng chờ người dùng nhấn Enter
+// HAM: DUNG VA DOI NHAN ENTER
 void pause() {
     cout << "\n  Nhan Enter de tiep tuc...";
     cin.ignore();
     cin.get();
 }
 
-// Tạo ID mới (max + 1)
+// HAM: TAO ID MOI (max + 1)
 int generateId(int maxId) {
     return maxId + 1;
 }

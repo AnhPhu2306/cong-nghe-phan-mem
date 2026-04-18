@@ -1,7 +1,17 @@
 #include "library.h"
 
-//  QUẢN LÝ ĐỘC GIẢ 
+// ==========================================
+// QUAN LY DOC GIA
+// ==========================================
+// Cac chuc nang:
+// - listReaders(): Hien thi danh sach tat ca doc gia
+// - addReader(): Them doc gia moi
+// - updateReader(): Sua thong tin doc gia
+// - deleteReader(): Xoa doc gia
+// - lockReader(): Khoa / Mo khoa tai khoan doc gia
+// - manageReader(): Menu quan ly doc gia
 
+// HAM: HIEN THI DANH SACH DOC GIA
 void listReaders() {
     clearScreen();
     cout << "          DANH SACH DOC GIA\n";
@@ -13,8 +23,10 @@ void listReaders() {
          << "Trang thai\n";
     cout << string(80, '-') << "\n";
 
+    // Dem va in danh sach doc gia
     int count = 0;
     for (auto& u : gUsers) {
+        // Chi hien thi user co role = "reader"
         if (u.role != "reader") continue;
         cout << left
              << setw(5)  << u.id
@@ -28,6 +40,7 @@ void listReaders() {
     pause();
 }
 
+// HAM: THEM DOC GIA MOI
 void addReader() {
     clearScreen();
     cout << "          THEM DOC GIA MOI\n";
@@ -71,6 +84,7 @@ void updateReader() {
     cout << "  Nhap ID doc gia can sua: ";
     int id; cin >> id;
 
+    // Tim doc gia theo ID
     User* found = nullptr;
     for (auto& u : gUsers) {
         if (u.id == id && u.role == "reader") { found = &u; break; }
@@ -83,6 +97,7 @@ void updateReader() {
     }
 
     cin.ignore();
+    // Cap nhat thong tin (Enter = giu nguyen)
     cout << "  Ho ten moi (Enter = giu nguyen): ";
     string input;
     getline(cin, input);
@@ -97,6 +112,7 @@ void updateReader() {
     pause();
 }
 
+// HAM: KHOA / MO KHOA TAI KHOAN DOC GIA
 void lockReader() {
     clearScreen();
     cout << "         KHOA / MO KHOA DOC GIA\n";
@@ -139,7 +155,7 @@ void deleteReader() {
 
     for (int i = 0; i < (int)gUsers.size(); i++) {
         if (gUsers[i].id == id && gUsers[i].role == "reader") {
-            // Kiểm tra đang mượn sách không
+            // Kiem tra doc gia co dang muon sach khong
             for (auto& slip : gBorrows) {
                 if (slip.readerId == id && slip.status == "borrowing") {
                     cout << "\n  Doc gia dang muon sach, khong the xoa!\n";
@@ -147,6 +163,7 @@ void deleteReader() {
                     return;
                 }
             }
+            // Xac nhan xoa
             cout << "  Xac nhan xoa doc gia \"" << gUsers[i].fullname << "\"? (y/n): ";
             char c; cin >> c;
             if (c == 'y' || c == 'Y') {
@@ -164,6 +181,7 @@ void deleteReader() {
     pause();
 }
 
+// HAM: MENU QUAN LY DOC GIA
 void manageReader() {
     int choice;
     do {
